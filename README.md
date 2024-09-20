@@ -64,12 +64,12 @@ Modalità IA
 ### Possibili miglioramenti futuri
 Alcune idee per le future versioni:
 
-Modalità multiplayer locale
-Supporto per una modalità online
-Aggiunta di effetti sonori e animazioni più complesse
-Miglioramenti grafici e personalizzazioni delle pedine
-Ringraziamenti
-Questo progetto è stato sviluppato da Andrea Palladino. Un ringraziamento speciale va a ChatGPT-4 per l'aiuto nella scrittura del codice e la progettazione dell'intelligenza artificiale del gioco.
+- Modalità multiplayer locale
+- Supporto per una modalità online
+- Aggiunta di effetti sonori e animazioni più complesse
+- Miglioramenti grafici e personalizzazioni delle pedine
+
+Ringraziamenti: questo progetto è stato sviluppato da Andrea Palladino. Un ringraziamento speciale va a ChatGPT-4 per l'aiuto nella scrittura del codice e la progettazione dell'intelligenza artificiale del gioco.
 
 ### Licenza
 Questo progetto è open-source e disponibile sotto la licenza Creative Commons.
