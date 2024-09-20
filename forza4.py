@@ -163,7 +163,56 @@ def ai_move_medium(grid):
         
 
 def ai_move_hard(grid):
-    pass
+    def evaluate_board(board):
+        if check_win(board, PLAYER2_COLOR):
+            return 1000
+        if check_win(board, PLAYER1_COLOR):
+            return -1000
+        return 0
+
+    def minimax(board, depth, is_maximizing):
+        if depth == 0 or check_win(board, PLAYER1_COLOR) or check_win(board, PLAYER2_COLOR):
+            return evaluate_board(board)
+
+        if is_maximizing:
+            max_eval = -float('inf')
+            available_columns = [c for c in range(COLS) if board[0][c] == 0]
+            random.shuffle(available_columns)  # Introduce randomness
+            for col in available_columns:
+                row = drop_piece(board, col, PLAYER2_COLOR)
+                eval = minimax(board, depth - 1, False)
+                board[row][col] = 0
+                max_eval = max(max_eval, eval)
+            return max_eval
+        else:
+            min_eval = float('inf')
+            available_columns = [c for c in range(COLS) if board[0][c] == 0]
+            random.shuffle(available_columns)  # Introduce randomness
+            for col in available_columns:
+                row = drop_piece(board, col, PLAYER1_COLOR)
+                eval = minimax(board, depth - 1, True)
+                board[row][col] = 0
+                min_eval = min(min_eval, eval)
+            return min_eval
+
+    def find_best_move(board):
+        best_move = None
+        best_value = -float('inf')
+        available_columns = [c for c in range(COLS) if board[0][c] == 0]
+        random.shuffle(available_columns)  # Introduce randomness
+        for col in available_columns:
+            temp_board = [row[:] for row in board]
+            row = drop_piece(temp_board, col, PLAYER2_COLOR)
+            move_value = minimax(temp_board, 4, False)
+            board[row][col] = 0
+            if move_value > best_value:
+                best_value = move_value
+                best_move = col
+        return best_move
+
+    best_col = find_best_move(grid)
+    if best_col is not None:
+        drop_piece(grid, best_col, PLAYER2_COLOR)
 
 
 def ai_move_champion(grid, simulations=1000):
