@@ -13,6 +13,7 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 PLAYER1_COLOR = RED
 PLAYER2_COLOR = YELLOW
+PLAYER_COLORS = {1: RED, 2: YELLOW}
 CURSOR_COLOR = (0, 255, 0)
 CURSOR_WIDTH = 8
 FONT_COLOR = (255, 255, 255)
@@ -28,12 +29,15 @@ pygame.display.set_caption("Forza 4")
 font = pygame.font.Font(None, FONT_SIZE)
 small_font = pygame.font.Font(None, SMALL_FONT_SIZE)
 
+
 def draw_button(text, x, y, w, h, hover=False):
     color = BUTTON_HOVER_COLOR if hover else BUTTON_COLOR
-    pygame.draw.rect(screen, color, (x, y, w, h), border_radius=10)  # Aggiungi angoli arrotondati
+    # Aggiungi angoli arrotondati
+    pygame.draw.rect(screen, color, (x, y, w, h), border_radius=10)
     text_surf = font.render(text, True, FONT_COLOR)
     text_rect = text_surf.get_rect(center=(x + w // 2, y + h // 2))
     screen.blit(text_surf, text_rect)
+
 
 def show_difficulty_screen():
     while True:
@@ -51,30 +55,68 @@ def show_difficulty_screen():
                     return "hard"
                 if champ_button_rect.collidepoint(x, y):
                     return "champion"
-        
+
         mouse_x, mouse_y = pygame.mouse.get_pos()
         screen.fill(BACKGROUND_COLOR)
-        
+
         # Disegna i pulsanti
-        draw_button("Easy", 200, 200, 300, 50, hover=easy_button_rect.collidepoint(mouse_x, mouse_y))
-        draw_button("Medium", 200, 275, 300, 50, hover=medium_button_rect.collidepoint(mouse_x, mouse_y))
-        draw_button("Hard", 200, 350, 300, 50, hover=hard_button_rect.collidepoint(mouse_x, mouse_y))
-        draw_button("Champion", 200, 425, 300, 50, hover=champ_button_rect.collidepoint(mouse_x, mouse_y))
-        
+        draw_button(
+            "Easy",
+            200,
+            200,
+            300,
+            50,
+            hover=easy_button_rect.collidepoint(
+                mouse_x,
+                mouse_y))
+        draw_button(
+            "Medium",
+            200,
+            275,
+            300,
+            50,
+            hover=medium_button_rect.collidepoint(
+                mouse_x,
+                mouse_y))
+        draw_button(
+            "Hard",
+            200,
+            350,
+            300,
+            50,
+            hover=hard_button_rect.collidepoint(
+                mouse_x,
+                mouse_y))
+        draw_button(
+            "Champion",
+            200,
+            425,
+            300,
+            50,
+            hover=champ_button_rect.collidepoint(
+                mouse_x,
+                mouse_y))
+
         # Disegna le istruzioni
         instructions_line1 = "ISTRUZIONI PER IL GIOCO: per selezionare la colonna,"
         instructions_line2 = "usare le frecce destra e sinistra."
         instructions_line3 = "Per far cadere la pedina, usare la freccia in giù."
-        
+
         # Renderizza il testo su più righe
-        instruction_text1 = small_font.render(instructions_line1, True, FONT_COLOR)
-        instruction_text2 = small_font.render(instructions_line2, True, FONT_COLOR)
-        instruction_text3 = small_font.render(instructions_line3, True, FONT_COLOR)
+        instruction_text1 = small_font.render(
+            instructions_line1, True, FONT_COLOR)
+        instruction_text2 = small_font.render(
+            instructions_line2, True, FONT_COLOR)
+        instruction_text3 = small_font.render(
+            instructions_line3, True, FONT_COLOR)
 
         # Posiziona le righe di testo
-        instruction_rect1 = instruction_text1.get_rect(center=(WIDTH // 2, HEIGHT - 100))
-        instruction_rect2 = instruction_text2.get_rect(center=(WIDTH // 2, HEIGHT - 80))
-        instruction_rect3 = instruction_text3.get_rect(center=(WIDTH // 2, HEIGHT - 60))
+        instruction_rect1 = instruction_text1.get_rect(
+            center=(WIDTH // 2, HEIGHT - 100))
+        instruction_rect2 = instruction_text2.get_rect(
+            center=(WIDTH // 2, HEIGHT - 80))
+        instruction_rect3 = instruction_text3.get_rect(
+            center=(WIDTH // 2, HEIGHT - 60))
 
         screen.blit(instruction_text1, instruction_rect1)
         screen.blit(instruction_text2, instruction_rect2)
@@ -86,18 +128,50 @@ def show_difficulty_screen():
 def draw_grid():
     for row in range(ROWS):
         for col in range(COLS):
-            pygame.draw.rect(screen, GRID_COLOR, (col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE), 2)
+            pygame.draw.rect(
+                screen,
+                GRID_COLOR,
+                (col * CELL_SIZE,
+                 row * CELL_SIZE,
+                 CELL_SIZE,
+                 CELL_SIZE),
+                2)
+
 
 def draw_piece(row, col, color):
-    pygame.draw.circle(screen, color, (col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 2 - 10)
+    pygame.draw.circle(
+        screen,
+        color,
+        (col *
+         CELL_SIZE +
+         CELL_SIZE //
+         2,
+         row *
+         CELL_SIZE +
+         CELL_SIZE //
+         2),
+        CELL_SIZE //
+        2 -
+        10)
+
 
 def draw_cursor(col):
-    pygame.draw.rect(screen, CURSOR_COLOR, (col * CELL_SIZE, 0, CELL_SIZE, HEIGHT), CURSOR_WIDTH)
+    pygame.draw.rect(
+        screen,
+        CURSOR_COLOR,
+        (col *
+         CELL_SIZE,
+         0,
+         CELL_SIZE,
+         HEIGHT),
+        CURSOR_WIDTH)
+
 
 def display_thinking_message():
     text = small_font.render("Il computer sta pensando...", True, FONT_COLOR)
     text_rect = text.get_rect(topright=(WIDTH - 10, 10))
     screen.blit(text, text_rect)
+
 
 def drop_piece(grid, col, color):
     for row in range(ROWS - 1, -1, -1):
@@ -105,6 +179,7 @@ def drop_piece(grid, col, color):
             grid[row][col] = color
             return row
     return -1
+
 
 def check_win(grid, color):
     # Verifica orizzontale
@@ -129,6 +204,7 @@ def check_win(grid, color):
                 return True
     return False
 
+
 def display_winner(message):
     text = font.render(message, True, FONT_COLOR)
     text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
@@ -136,11 +212,13 @@ def display_winner(message):
     pygame.display.flip()
     pygame.time.wait(3000)  # Attendere 3 secondi
 
+
 def ai_move_easy(grid):
     available_columns = [c for c in range(COLS) if grid[0][c] == 0]
     if available_columns:
         col = random.choice(available_columns)
         drop_piece(grid, col, PLAYER2_COLOR)
+
 
 def ai_move_medium(grid):
     def can_win(grid, color, col):
@@ -160,7 +238,7 @@ def ai_move_medium(grid):
     if available_columns:
         col = random.choice(available_columns)
         drop_piece(grid, col, PLAYER2_COLOR)
-        
+
 
 def ai_move_hard(grid):
     def evaluate_board(board):
@@ -171,7 +249,9 @@ def ai_move_hard(grid):
         return 0
 
     def minimax(board, depth, is_maximizing):
-        if depth == 0 or check_win(board, PLAYER1_COLOR) or check_win(board, PLAYER2_COLOR):
+        if depth == 0 or check_win(
+                board, PLAYER1_COLOR) or check_win(
+                board, PLAYER2_COLOR):
             return evaluate_board(board)
 
         if is_maximizing:
@@ -270,14 +350,15 @@ def ai_move_champion(grid, simulations=1000):
             return forced_move
 
         remaining_moves = sum(board[0][c] == 0 for c in range(COLS))
-        num_simulations = 1000 if remaining_moves > 20 else 500 if remaining_moves > 10 else 100
+        num_simulations = simulations if remaining_moves > 20 else 500 if remaining_moves > 10 else 100
 
         for col in range(COLS):
             if board[0][col] == 0:
                 temp_board = [row[:] for row in board]
                 row = drop_piece(temp_board, col, PLAYER2_COLOR)
 
-                wins = sum(simulate_game([row[:] for row in temp_board], PLAYER1_COLOR) for _ in range(num_simulations))
+                wins = sum(simulate_game(
+                    [row[:] for row in temp_board], PLAYER1_COLOR) for _ in range(num_simulations))
                 move_scores[col] = wins
 
                 temp_board[row][col] = 0
@@ -289,16 +370,15 @@ def ai_move_champion(grid, simulations=1000):
         drop_piece(grid, best_col, PLAYER2_COLOR)
 
 
-
 def main():
     global grid
     difficulty_level = show_difficulty_screen()
-    
+
     grid = [[0] * COLS for _ in range(ROWS)]
     clock = pygame.time.Clock()
     turn = 0
     column = 0
-    
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -318,17 +398,19 @@ def main():
                             for r in range(ROWS):
                                 for c in range(COLS):
                                     if grid[r][c] != 0:
-                                        draw_piece(r, c, grid[r][c])
+                                        draw_piece(
+                                            r, c, PLAYER_COLORS.get(
+                                                grid[r][c]))
                             draw_cursor(column)
                             pygame.display.flip()
 
                             if check_win(grid, PLAYER1_COLOR):
                                 display_winner("Player 1 Wins!")
                                 return
-                            
+
                             turn = 1
                             pygame.time.wait(100)
-                            
+
                             screen.fill(BACKGROUND_COLOR)
                             draw_grid()
                             for r in range(ROWS):
@@ -338,7 +420,7 @@ def main():
                             draw_cursor(column)
                             display_thinking_message()
                             pygame.display.flip()
-                            
+
                             pygame.time.wait(500)
 
                             if difficulty_level == "easy":
@@ -349,7 +431,7 @@ def main():
                                 ai_move_hard(grid)
                             elif difficulty_level == "champion":
                                 ai_move_champion(grid)
-                            
+
                             screen.fill(BACKGROUND_COLOR)
                             draw_grid()
                             for r in range(ROWS):
@@ -358,11 +440,11 @@ def main():
                                         draw_piece(r, c, grid[r][c])
                             draw_cursor(column)
                             pygame.display.flip()
-                            
+
                             if check_win(grid, PLAYER2_COLOR):
                                 display_winner("Computer Wins!")
                                 return
-                            
+
                             turn = 0
 
         screen.fill(BACKGROUND_COLOR)
@@ -374,6 +456,7 @@ def main():
         draw_cursor(column)
         pygame.display.flip()
         clock.tick(60)
+
 
 if __name__ == "__main__":
     easy_button_rect = pygame.Rect(200, 200, 300, 50)

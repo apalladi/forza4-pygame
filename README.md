@@ -46,11 +46,10 @@ Premi la freccia giù per far cadere la pedina nella colonna selezionata.
 Vittoria o sconfitta: Il gioco termina quando uno dei giocatori riesce a mettere in fila quattro pedine dello stesso colore in orizzontale, verticale o diagonale. Se non ci sono più mosse disponibili e nessuno ha vinto, la partita termina in pareggio.
 
 ### Logica dell'IA
-Easy: L'IA seleziona casualmente una colonna disponibile.
-Medium: L'IA cerca di bloccare le mosse vincenti dell'avversario, ma non usa una strategia avanzata.
-Hard: L'IA utilizza l'algoritmo Minimax con una profondità limitata per prendere decisioni ottimali.
-Champion: L'IA effettua simulazioni e analisi approfondite per trovare la mossa migliore in base alla situazione della partita.
-Struttura del codice
+* **Easy**: L'IA seleziona casualmente una colonna disponibile.
+* **Medium**: L'IA cerca di bloccare le mosse vincenti dell'avversario, ma non usa una strategia avanzata.
+* **Hard**: L'IA utilizza l'algoritmo Minimax con una profondità limitata per prendere decisioni ottimali.
+* **Champion**: L'IA effettua simulazioni e analisi approfondite per trovare la mossa migliore in base alla situazione della partita.
 
 ### Funzioni principali
 draw_grid(): Disegna la griglia di gioco.
@@ -61,7 +60,10 @@ ai_move_easy(grid), ai_move_medium(grid), ai_move_hard(grid), ai_move_champion(g
 show_difficulty_screen(): Mostra la schermata iniziale per selezionare il livello di difficoltà.
 Modalità IA
 
-### Possibili miglioramenti futuri
+## AI vs AI
+E' stato aggiunto lo script test_play_games.py che permette di far giocare una contro l'altra le strategie proposte come avversari nel gioco ottenendo le statistiche dei risultati.
+
+## Possibili miglioramenti futuri
 Alcune idee per le future versioni:
 
 - Modalità multiplayer locale
